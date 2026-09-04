@@ -1,0 +1,1174 @@
+/* ============================================
+   OSNOVNE POSTAVKE
+============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #ffffff;
+    color: #111111;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    background: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+/* ============================================
+   BOJE
+============================================ */
+
+:root {
+    --crvena: #e63946;
+    --crvena-tamna: #c1121f;
+    --crvena-svijetla: #fff0f0;
+    --crna: #111111;
+    --siva: #4a4a6a;
+    --siva-svijetla: #f4f4f4;
+    --bijela: #ffffff;
+}
+
+
+/* ============================================
+   PROGRESS BAR
+============================================ */
+
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 3px;
+    width: 0%;
+
+    background: var(--crvena);
+
+    z-index: 9999;
+
+    transition: width 0.3s ease;
+}
+
+
+/* ============================================
+   HEADER
+============================================ */
+
+.header {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 1000;
+
+    height: 72px;
+
+    background: rgba(255, 255, 255, 0.95);
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.header-container {
+    max-width: 1440px;
+
+    height: 100%;
+
+    margin: 0 auto;
+    padding: 0 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    color: var(--crvena);
+}
+
+.logo svg {
+    color: var(--crvena);
+}
+
+.nav {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    color: var(--siva);
+
+    transition: 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--crvena);
+}
+
+
+/* ============================================
+   HERO
+============================================ */
+
+.hero {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+
+   padding: 140px 0 60px;
+    margin-top: 20px;  
+    background:
+        url('car.jpg')
+        right center / contain
+        no-repeat;
+
+    background-color: #fafafa;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 1440px;
+
+    margin: 0 auto;
+    padding: 0 24px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px;
+
+    align-items: center;
+}
+
+.hero-text {
+    max-width: 550px;
+
+    padding: 30px;
+
+    background: rgba(255, 255, 255, 0.85);
+
+    border-radius: 16px;
+
+    border-left: 6px solid var(--crvena);
+}
+
+.hero-badge {
+    display: inline-block;
+
+    padding: 6px 16px;
+
+    border-radius: 30px;
+
+    background: var(--crvena-svijetla);
+    color: var(--crvena);
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    margin-bottom: 16px;
+}
+
+.hero-title {
+    font-size: 3rem;
+
+    font-weight: 900;
+
+    line-height: 1.1;
+
+    margin-bottom: 16px;
+}
+
+.hero-title span {
+    color: var(--crvena);
+}
+
+.hero-desc {
+    font-size: 1rem;
+
+    color: var(--siva);
+
+    line-height: 1.6;
+
+    margin-bottom: 24px;
+}
+
+.hero-buttons {
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+
+/* ============================================
+   DUGMAD
+============================================ */
+
+.btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 14px 32px;
+
+    border-radius: 50px;
+
+    font-weight: 700;
+    font-size: 0.9rem;
+
+    transition: 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--crvena);
+    color: var(--bijela);
+}
+
+.btn-primary:hover {
+    background: var(--crvena-tamna);
+}
+
+.btn-secondary {
+    background: var(--crna);
+    color: var(--bijela);
+}
+
+.btn-secondary:hover {
+    background: #333333;
+}
+
+
+/* ============================================
+   USLUGE
+============================================ */
+
+.services {
+    padding: 80px 0 60px;
+
+    background: var(--siva-svijetla);
+}
+
+.services-title {
+    font-size: 2.8rem;
+
+    font-weight: 900;
+
+    text-align: center;
+
+    margin-bottom: 8px;
+}
+
+.services-title span {
+    color: var(--crvena);
+}
+
+.services-desc {
+    font-size: 1.2rem;
+
+    color: var(--siva);
+
+    text-align: center;
+
+    margin-bottom: 40px;
+}
+
+.services-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 20px;
+}
+
+.service-card {
+    background: var(--bijela);
+
+    padding: 32px 28px;
+
+    border-radius: 16px;
+
+    border: 1px solid rgba(0, 0, 0, 0.04);
+
+    transition: 0.3s ease;
+}
+
+.service-card:hover {
+    border-color: var(--crvena);
+    transform: translateY(-2px);
+}
+
+.service-card h3 {
+    font-size: 1.1rem;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    margin-bottom: 8px;
+}
+
+.service-desc {
+    font-size: 0.95rem;
+
+    color: var(--siva);
+
+    margin-bottom: 16px;
+}
+
+.service-prices {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.price-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 8px 0;
+
+    border-bottom: 1px dashed #e5e5e5;
+}
+
+.price-label {
+    font-size: 0.9rem;
+
+    font-weight: 500;
+}
+
+.price-value {
+    font-size: 1rem;
+
+    font-weight: 800;
+
+    color: var(--crvena);
+}
+
+
+/* ============================================
+   PROCJENA
+============================================ */
+
+.estimate {
+    padding: 80px 0;
+
+    background: var(--bijela);
+}
+
+.estimate-title {
+    font-size: 2.8rem;
+
+    font-weight: 900;
+
+    text-align: center;
+
+    margin-bottom: 8px;
+}
+
+.estimate-title span {
+    color: var(--crvena);
+}
+
+.estimate-desc {
+    font-size: 1.2rem;
+
+    color: var(--siva);
+
+    text-align: center;
+
+    margin-bottom: 40px;
+}
+
+
+/* ============================================
+   UPUTSTVO
+============================================ */
+
+.guide-box {
+    max-width: 800px;
+
+    margin: 0 auto 24px;
+
+    padding: 20px 24px;
+
+    background: var(--siva-svijetla);
+
+    border-left: 4px solid var(--crvena);
+
+    border-radius: 8px;
+}
+
+.guide-title {
+    font-size: 1.1rem;
+
+    margin-bottom: 8px;
+}
+
+.guide-list {
+    margin-left: 20px;
+
+    color: #555555;
+
+    font-size: 1rem;
+
+    line-height: 2;
+}
+
+
+/* ============================================
+   UPLOAD
+============================================ */
+
+.upload-area {
+    position: relative;
+
+    max-width: 800px;
+
+    min-height: 200px;
+
+    margin: 0 auto;
+
+    padding: 40px 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    border: 2px dashed #c0c0d0;
+
+    border-radius: 16px;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition: 0.3s ease;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color: var(--crvena);
+
+    background: var(--crvena-svijetla);
+}
+
+.upload-area.has-image {
+    display: none;
+}
+
+.upload-content {
+    pointer-events: none;
+}
+
+.upload-icon {
+    font-size: 3rem;
+
+    margin-bottom: 8px;
+}
+
+.upload-content h3 {
+    margin-bottom: 6px;
+}
+
+.upload-content p {
+    color: var(--siva);
+
+    font-size: 0.95rem;
+}
+
+.upload-hint {
+    display: block;
+
+    font-size: 0.7rem;
+
+    color: #8a8aaa;
+
+    margin-top: 6px;
+}
+
+.upload-area input[type="file"] {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+
+    cursor: pointer;
+}
+
+
+/* ============================================
+   PREVIEW I CANVAS
+============================================ */
+
+.preview-container {
+    max-width: 800px;
+
+    margin: 20px auto 0;
+
+    padding: 16px;
+
+    background: var(--siva-svijetla);
+
+    border-radius: 16px;
+}
+
+.canvas-wrapper {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    max-height: 500px;
+
+    margin-top: 12px;
+
+    background: var(--bijela);
+
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+.canvas-wrapper canvas {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-height: 500px;
+
+    background: #f8f9fa;
+
+    cursor: crosshair;
+}
+
+.draw-hint {
+    position: absolute;
+
+    bottom: 16px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    padding: 6px 18px;
+
+    background: rgba(0, 0, 0, 0.7);
+
+    color: white;
+
+    border-radius: 20px;
+
+    font-size: 0.75rem;
+
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.canvas-wrapper .remove-btn {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.7);
+
+    color: white;
+
+    border-radius: 50%;
+
+    font-size: 1.2rem;
+
+    z-index: 10;
+}
+
+.canvas-wrapper .remove-btn:hover {
+    background: var(--crvena);
+}
+
+
+/* ============================================
+   KONTROLE
+============================================ */
+
+.estimate-controls {
+    max-width: 800px;
+
+    margin: 20px auto 0;
+}
+
+.controls-row {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+#damageCounter {
+    padding: 6px 16px;
+
+    background: var(--crvena);
+
+    color: white;
+
+    border-radius: 30px;
+
+    font-size: 0.85rem;
+
+    font-weight: 700;
+}
+
+#analyzeBtn:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+
+/* ============================================
+   REZULTATI
+============================================ */
+
+.results-container {
+    max-width: 800px;
+
+    margin: 30px auto 0;
+}
+
+.results-grid {
+    padding: 20px;
+
+    background: var(--siva-svijetla);
+
+    border-radius: 16px;
+}
+
+.results-grid h3 {
+    margin-bottom: 12px;
+}
+
+#detectionList {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+}
+
+.detection-item {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 10px 16px;
+
+    background: var(--bijela);
+
+    border-radius: 8px;
+
+    border-left: 3px solid var(--crvena);
+}
+
+.result-summary {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+    margin-bottom: 12px;
+}
+
+.summary-item {
+    padding: 12px 16px;
+
+    background: var(--bijela);
+
+    border-radius: 8px;
+}
+
+.summary-item span {
+    display: block;
+
+    font-size: 0.7rem;
+
+    color: #8a8aaa;
+
+    text-transform: uppercase;
+
+    margin-bottom: 4px;
+}
+
+.summary-item strong {
+    font-size: 1.2rem;
+}
+
+.status-damaged {
+    color: var(--crvena) !important;
+}
+
+#recommendBtn {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 8px;
+
+    padding: 10px 24px;
+
+    background: var(--crvena);
+
+    color: white;
+
+    border-radius: 50px;
+
+    font-size: 0.9rem;
+
+    font-weight: 700;
+}
+
+#recommendBtn:hover {
+    background: var(--crvena-tamna);
+}
+
+
+/* ============================================
+   KONTAKT
+============================================ */
+
+.contact {
+    padding: 80px 0;
+
+    background: var(--siva-svijetla);
+}
+
+.contact-grid {
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 0 20px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px;
+}
+
+.contact-title {
+    font-size: 2.8rem;
+
+    font-weight: 900;
+
+    margin-bottom: 8px;
+}
+
+.contact-title span {
+    color: var(--crvena);
+}
+
+.contact-desc {
+    font-size: 1.2rem;
+
+    color: var(--siva);
+
+    margin-bottom: 24px;
+}
+
+.contact-details {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+
+    margin-top: 20px;
+}
+
+.contact-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 14px;
+}
+
+.contact-item span:first-child {
+    font-size: 1.4rem;
+}
+
+.contact-item strong {
+    display: block;
+
+    font-size: 0.8rem;
+
+    color: #8a8aaa;
+
+    font-weight: 500;
+
+    margin-bottom: 2px;
+}
+
+.contact-item a {
+    font-weight: 600;
+}
+
+.contact-item a:hover {
+    color: var(--crvena);
+}
+
+
+/* ============================================
+   KONTAKT FORMA
+============================================ */
+
+.contact-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+    padding: 30px;
+
+    background: var(--bijela);
+
+    border-radius: 16px;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    width: 100%;
+
+    padding: 14px 18px;
+
+    border: 1px solid #c0c0d0;
+
+    border-radius: 8px;
+
+    font-family: 'Inter', sans-serif;
+
+    font-size: 0.9rem;
+
+    background: white;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+    outline: none;
+
+    border-color: var(--crvena);
+}
+
+.contact-form textarea {
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+
+/* ============================================
+   FOOTER
+============================================ */
+
+.footer {
+    padding: 60px 0 30px;
+
+    background: var(--crna);
+
+    color: rgba(255, 255, 255, 0.7);
+
+    border-top: 3px solid var(--crvena);
+}
+
+.footer-container {
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 0 40px;
+}
+
+.footer-top {
+    display: grid;
+
+    grid-template-columns: 1fr 2fr;
+
+    gap: 40px;
+
+    margin-bottom: 40px;
+
+    padding-bottom: 40px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-brand .logo {
+    color: white;
+}
+
+.footer-brand .logo svg {
+    color: white;
+}
+
+.footer-tagline {
+    font-size: 0.95rem;
+
+    color: rgba(255, 255, 255, 0.6);
+
+    margin-top: 12px;
+}
+
+.footer-cols {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 30px;
+}
+
+.footer-col h4 {
+    display: inline-block;
+
+    color: white;
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    margin-bottom: 16px;
+
+    padding-bottom: 8px;
+
+    border-bottom: 2px solid var(--crvena);
+}
+
+.footer-col a,
+.footer-col span {
+    display: block;
+
+    font-size: 0.9rem;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    margin-bottom: 10px;
+}
+
+.footer-col a:hover {
+    color: var(--crvena);
+}
+
+.footer-bottom {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    font-size: 0.8rem;
+
+    color: rgba(255, 255, 255, 0.4);
+}
+
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+
+@media (max-width: 1200px) {
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+
+    .hero-content {
+        grid-template-columns: 1fr;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .nav {
+        display: none;
+    }
+
+    .hero {
+        background-position: center;
+    }
+
+    .hero-content {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-text {
+        padding: 24px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .controls-row {
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+    .footer-cols {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+
+        text-align: center;
+
+        gap: 6px;
+    }
+
+    .result-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .services-title,
+    .estimate-title,
+    .contact-title {
+        font-size: 2rem;
+    }
+
+    .draw-hint {
+        font-size: 0.6rem;
+        white-space: normal;
+        max-width: 90%;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .hero-text {
+        padding: 20px;
+    }
+
+    .estimate,
+    .services,
+    .contact {
+        padding: 60px 0;
+    }
+
+    .footer-container {
+        padding: 0 20px;
+    }
+
+}

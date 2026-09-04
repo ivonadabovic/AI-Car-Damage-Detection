@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TDC - AI Procjena oštećenja vozila</title>
+
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+ <!-- BYPASS TRACKING PREVENTION -->
+  
+    <script>
+        // Ignoriši tracking za ONNX
+        window.ort = window.ort || {};
+        console.log("🔓 Tracking prevention bypass active");
+    </script>
+
+    <!-- ONNX Runtime Web - za YOLO modele -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.1/dist/ort.min.js">
+    </script>
+
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs">
+    </script>
+
+</head>
+<body>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-bar"></div>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <div class="header-container">
+
+            <a href="#" class="logo">
+
+                <svg
+                    width="130"
+                    height="45"
+                    viewBox="0 0 130 45"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <text
+                        x="0"
+                        y="30"
+                        font-family="Arial"
+                        font-size="28"
+                        font-weight="900"
+                        fill="currentColor"
+                    >
+                        TDC
+                    </text>
+                </svg>
+
+            </a>
+
+            <nav class="nav">
+
+                <a href="#" class="nav-link">
+                    Početna
+                </a>
+
+                <a href="#services" class="nav-link">
+                    Usluge
+                </a>
+
+                <a href="#estimate" class="nav-link">
+                    Procjena
+                </a>
+
+                <a href="#contact" class="nav-link">
+                    Kontakt
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-text">
+
+                <span class="hero-badge">
+                    AI PROCJENA OŠTEĆENJA
+                </span>
+
+                <h1 class="hero-title">
+                    <span>Premium Quality</span><br>
+                    Car Protection
+                </h1>
+
+                <p class="hero-desc">
+                    Unesite fotografiju vozila, a AI model će detektovati
+                    i klasifikovati oštećenja na osnovu CarDD dataset-a.
+                    Podržane kategorije: udubljenje, ogrebotina, pukotina,
+                    razbijeno staklo, oštećen far, probušena guma,
+                    oštećenje kože, volana, sjedišta, felne i prljavština.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <button
+                        class="btn btn-primary"
+                        id="dugmeProcjena"
+                    >
+                        Procijeni štetu
+                    </button>
+
+                    <button
+                        class="btn btn-secondary"
+                        id="dugmeUsluge"
+                    >
+                        Pogledaj usluge
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= USLUGE ================= -->
+
+    <section class="services" id="services">
+
+        <div class="container">
+
+            <h2 class="services-title">
+                Naše <span>usluge</span>
+            </h2>
+
+            <p class="services-desc">
+                Profesionalna zaštita i njega vašeg vozila
+            </p>
+
+            <div class="services-grid">
+
+                <!-- POLIRANJE -->
+                <div class="service-card">
+                    <h3>Poliranje</h3>
+                    <p class="service-desc">
+                        Uklanjanje ogrebotina i vraćanje sjaja laka.
+                    </p>
+                    <div class="service-prices">
+                        <div class="price-item">
+                            <span class="price-label">One phase</span>
+                            <span class="price-value">300€</span>
+                        </div>
+                        <div class="price-item">
+                            <span class="price-label">Three phases</span>
+                            <span class="price-value">500€</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DUBINSKO -->
+                <div class="service-card">
+                    <h3>Dubinsko čišćenje</h3>
+                    <p class="service-desc">
+                        Detaljno čišćenje enterijera vozila.
+                    </p>
+                    <div class="service-prices">
+                        <div class="price-item">
+                            <span class="price-label">Bez demontaže</span>
+                            <span class="price-value">150€</span>
+                        </div>
+                        <div class="price-item">
+                            <span class="price-label">Sa demontažom</span>
+                            <span class="price-value">250€</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KOŽA -->
+                <div class="service-card">
+                    <h3>Restauracija kože</h3>
+                    <p class="service-desc">
+                        Obnova i zaštita kožnih površina.
+                    </p>
+                    <div class="service-prices">
+                        <div class="price-item">
+                            <span class="price-label">Dio</span>
+                            <span class="price-value">100€</span>
+                        </div>
+                        <div class="price-item">
+                            <span class="price-label">Kompletno</span>
+                            <span class="price-value">250€</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FELNE -->
+                <div class="service-card">
+                    <h3>Restauracija felgi</h3>
+                    <p class="service-desc">
+                        Profesionalna restauracija i zaštita felni.
+                    </p>
+                    <div class="service-prices">
+                        <div class="price-item">
+                            <span class="price-label">4 felne</span>
+                            <span class="price-value">od 260€</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PPF -->
+                <div class="service-card">
+                    <h3>PPF</h3>
+                    <p class="service-desc">
+                        Zaštitna folija za očuvanje laka vozila.
+                    </p>
+                    <div class="service-prices">
+                        <div class="price-item">
+                            <span class="price-label">Kompletna zaštita</span>
+                            <span class="price-value">od 3500€</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KERAMIKA -->
+                <div class="service-card">
+                    <h3>Keramička zaštita</h3>
+                    <p class="service-desc">
+                        Dugotrajna zaštita i sjaj površine vozila.
+                    </p>
+                    <div class="service-prices">
+                        <div class="price-item">
+                            <span class="price-label">Zaštita vozila</span>
+                            <span class="price-value">500€</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- POPRAVKA LIMARIJE -->
+                <div class="service-card">
+                    <h3>Popravka limarije</h3>
+                    <p class="service-desc">
+                        Profesionalna popravka udubljenja i limarije.
+                    </p>
+                    <div class="service-prices">
+                        <div class="price-item">
+                            <span class="price-label">Dio</span>
+                            <span class="price-value">od 250€</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESTAURACIJA VOLANA -->
+                <div class="service-card">
+                    <h3>Restauracija volana</h3>
+                    <p class="service-desc">
+                        Obnova i zaštita volana.
+                    </p>
+                    <div class="service-prices">
+                        <div class="price-item">
+                            <span class="price-label">Restauracija</span>
+                            <span class="price-value">od 80€</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= PROCJENA ================= -->
+
+    <section class="estimate" id="estimate">
+
+        <div class="container">
+
+            <h2 class="estimate-title">
+                Procijenite <span>štetu</span>
+            </h2>
+
+            <p class="estimate-desc">
+                Uploadujte fotografiju, YOLO AI model će detektovati oštećenja
+                i preporučiti odgovarajuću uslugu.
+            </p>
+
+            <!-- UPUTSTVO -->
+            <div class="guide-box">
+
+                <h3 class="guide-title">
+                    Kako funkcioniše procjena?
+                </h3>
+
+                <ol class="guide-list">
+
+                    <li>
+                        <strong>Uploaduj</strong> fotografiju vozila
+                    </li>
+
+                    <li>
+                        <strong>YOLO AI</strong> detektuje oštećenja na slici
+                        (CarDD dataset - 6 kategorija + enterijer)
+                    </li>
+
+                    <li>
+                        <strong>AI izračunava</strong> pouzdanost za svaki tip oštećenja
+                    </li>
+
+                    <li>
+                        <strong>Odabire</strong> najvjerovatnije oštećenje
+                    </li>
+
+                    <li>
+                        <strong>Preporučuje</strong> odgovarajuću uslugu
+                    </li>
+
+                </ol>
+
+            </div>
+
+            <!-- UPLOAD -->
+            <div
+                class="upload-area"
+                id="uploadArea"
+            >
+
+                <div class="upload-content">
+
+                    <div class="upload-icon">
+                        📷
+                    </div>
+
+                    <h3>
+                        Uploadujte fotografiju vozila
+                    </h3>
+
+                    <p>
+                        Kliknite ovdje ili prevucite fotografiju
+                    </p>
+
+                    <span class="upload-hint">
+                        JPG, JPEG ili PNG
+                    </span>
+
+                </div>
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                >
+
+            </div>
+
+            <!-- PREVIEW -->
+            <div
+                class="preview-container"
+                id="previewContainer"
+                style="display: none;"
+            >
+
+                <div class="canvas-wrapper">
+
+                    <canvas id="resultCanvas"></canvas>
+
+                    <div
+                        class="draw-hint"
+                        id="drawHint"
+                    >
+                        📷 Učitavanje YOLO modela...
+                    </div>
+
+                    <button
+                        class="remove-btn"
+                        id="removeImageBtn"
+                        type="button"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="estimate-controls">
+
+                <div class="controls-row">
+
+                    <span id="damageCounter">
+                        🔍 Oštećenja: 0
+                    </span>
+
+                    <button
+                        class="btn btn-primary"
+                        id="analyzeBtn"
+                        type="button"
+                        disabled
+                    >
+                        Analiziraj
+                    </button>
+
+                    <button
+                        class="btn btn-secondary"
+                        id="clearBtn"
+                        type="button"
+                    >
+                        Obriši
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- REZULTATI -->
+            <div
+                class="results-container"
+                id="resultsContainer"
+                style="display: none;"
+            >
+
+                <div class="results-grid">
+
+                    <h3>
+                        Rezultati procjene
+                    </h3>
+
+                    <div id="detectionList"></div>
+
+                    <div class="result-summary">
+
+                        <div class="summary-item">
+
+                            <span>
+                                Ukupno oštećenja
+                            </span>
+
+                            <strong id="totalDetections">
+                                0
+                            </strong>
+
+                        </div>
+
+                        <div class="summary-item">
+
+                            <span>
+                                Status
+                            </span>
+
+                            <strong
+                                id="damageStatus"
+                                class="status-damaged"
+                            >
+                                -
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        id="recommendBtn"
+                        type="button"
+                    >
+                        Preporučena usluga
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= KONTAKT ================= -->
+
+    <section
+        class="contact"
+        id="contact"
+    >
+
+        <div class="contact-grid">
+
+            <div class="contact-info">
+
+                <h2 class="contact-title">
+                    Kontaktirajte <span>nas</span>
+                </h2>
+
+                <p class="contact-desc">
+                    Za više informacija o našim uslugama
+                    kontaktirajte nas.
+                </p>
+
+                <div class="contact-details">
+
+                    <div class="contact-item">
+
+                        <span>📍</span>
+
+                        <div>
+
+                            <strong>
+                                Lokacija
+                            </strong>
+
+                            <a href="#">
+                                Iva Andrića 41, Podgorica, Crna Gora
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="contact-item">
+
+                        <span>📞</span>
+
+                        <div>
+
+                            <strong>
+                                Telefon
+                            </strong>
+
+                            <a href="tel:+38269779777">
+                                +382 69 779 777
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="contact-item">
+
+                        <span>✉️</span>
+
+                        <div>
+
+                            <strong>
+                                Email
+                            </strong>
+
+                            <a href="mailto:topdetailingcenter@gmail.com">
+                                topdetailingcenter@gmail.com
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="contact-item">
+
+                        <span>🕐</span>
+
+                        <div>
+
+                            <strong>
+                                Radno vrijeme
+                            </strong>
+
+                            <span>
+                                09:00 - 20:00
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- KONTAKT FORMA -->
+            <form class="contact-form">
+
+                <input
+                    type="text"
+                    placeholder="Ime i prezime"
+                >
+
+                <input
+                    type="email"
+                    placeholder="Email"
+                >
+
+                <input
+                    type="text"
+                    placeholder="Telefon"
+                >
+
+                <select>
+
+                    <option value="">
+                        Odaberite uslugu
+                    </option>
+
+                    <option>
+                        Poliranje
+                    </option>
+
+                    <option>
+                        Dubinsko čišćenje
+                    </option>
+
+                    <option>
+                        Restauracija kože
+                    </option>
+
+                    <option>
+                        Restauracija felgi
+                    </option>
+
+                    <option>
+                        PPF
+                    </option>
+
+                    <option>
+                        Keramička zaštita
+                    </option>
+
+                    <option>
+                        Popravka limarije
+                    </option>
+
+                    <option>
+                        Restauracija volana
+                    </option>
+
+                </select>
+
+                <textarea
+                    placeholder="Vaša poruka..."
+                ></textarea>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                >
+                    Pošalji poruku
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-top">
+
+                <div class="footer-brand">
+
+                    <div class="logo">
+
+                        <svg
+                            width="130"
+                            height="45"
+                            viewBox="0 0 130 45"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <text
+                                x="0"
+                                y="30"
+                                font-family="Arial"
+                                font-size="28"
+                                font-weight="900"
+                                fill="currentColor"
+                            >
+                                TDC
+                            </text>
+                        </svg>
+
+                    </div>
+
+                    <p class="footer-tagline">
+                        Premium zaštita i njega vašeg vozila.
+                    </p>
+
+                </div>
+
+                <div class="footer-cols">
+
+                    <div class="footer-col">
+
+                        <h4>Usluge</h4>
+
+                        <span>Poliranje</span>
+                        <span>Čišćenje</span>
+                        <span>Restauracija</span>
+                        <span>PPF</span>
+                        <span>Keramika</span>
+                        <span>Limarija</span>
+
+                    </div>
+
+                    <div class="footer-col">
+
+                        <h4>Procjena</h4>
+
+                        <a href="#estimate">
+                            YOLO AI detekcija oštećenja
+                        </a>
+
+                        <a href="#estimate">
+                            Procentualna analiza
+                        </a>
+
+                        <a href="#estimate">
+                            Preporuka usluge
+                        </a>
+
+                    </div>
+
+                    <div class="footer-col">
+
+                        <h4>Kontakt</h4>
+
+                        <span>
+                            +382 69 779 777
+                        </span>
+
+                        <span>
+                            09:00 - 20:00
+                        </span>
+
+                        <span>
+                            topdetailingcenter@gmail.com
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+
+                <span>
+                    © 2026 TDC. Sva prava zadržana.
+                </span>
+
+                <span>
+                    Diplomski rad - Ivona Dabović
+                </span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
