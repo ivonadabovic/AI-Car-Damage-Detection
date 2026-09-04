@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ============================================
-    // YOLO DETEKCIJA - NAJMANJI PRAG 10%
+    // YOLO DETEKCIJA - BEZ FILTERA
     // ============================================
 
     async function pokreniYOLODetekciju() {
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const allDetections = [];
-            const confidenceThreshold = 0.1;
+            const confidenceThreshold = 0.05;
 
             function getCarDDClass(classId) {
                 return classId;
@@ -324,44 +324,20 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(`📊 Nakon NMS: ${nmsDetections.length} detekcija`);
 
             // ============================================
-            // FILTRIRANJE - NAJMANJI PRAG 10%
+            // BEZ FILTERA - PRIKAZUJE SVE DETEKCIJE
             // ============================================
 
-            console.log("🔍 FILTRIRANJE - najmanji prag 10%");
+            console.log("🔍 BEZ FILTERA - prikazujem sve detekcije!");
+            const filteredDetections = nmsDetections;
 
-            const filteredDetections = nmsDetections.filter(d => {
-                const conf = d.confidence;
-                const centerY = d.centerY;
-                const sirina = d.width;
-                const visina = d.height;
-                
-                // SVI PRAGOVI 10% - detektuje SVE
-                if (d.className === "scratch") {
-                    return conf > 0.10;
-                }
-                if (d.className === "dent") {
-                    return conf > 0.10 && sirina > 5 && visina > 5;
-                }
-                if (d.className === "crack") {
-                    return conf > 0.10 && centerY < 0.60 && sirina > 5 && visina > 5;
-                }
-                if (d.className === "tire_flat") {
-                    return conf > 0.10 && centerY > 0.35;
-                }
-                if (d.className === "lamp_broken") {
-                    return conf > 0.10 && centerY < 0.55 && sirina > 5 && visina > 5;
-                }
-                if (d.className === "glass_shatter") {
-                    return conf > 0.10 && centerY < 0.55 && sirina > 5 && visina > 5;
-                }
-                return conf > 0.10;
-            });
-
-            console.log(`📊 Nakon filtera (10%): ${filteredDetections.length} detekcija`);
-
-            // ============================================
-            // DETEKCIJA KOŽE - UKLONJENA
-            // ============================================
+            console.log(`📊 BEZ FILTERA: ${filteredDetections.length} detekcija`);
+            
+            if (filteredDetections.length > 0) {
+                console.log("📊 SVE DETEKCIJE:");
+                filteredDetections.forEach((d, i) => {
+                    console.log(`   ${i+1}. ${d.naziv} (${Math.round(d.confidence * 100)}%)`);
+                });
+            }
 
             // ============================================
             // ODABIR: SAMO YOLO -> POLIRANJE
@@ -982,8 +958,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // ============================================
 
     console.log("🚗 TDC - YOLO AI Procjena oštećenja vozila");
-    console.log("🎯 Poliranje - najmanji prag 10%");
-    console.log("🔍 Detektuje sve što YOLO vidi");
+    console.log("🎯 BEZ FILTERA - prikazujem sve detekcije!");
+    console.log("🔍 Sve što YOLO vidi → Poliranje");
 
     analyzeBtn.disabled = true;
 
