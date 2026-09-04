@@ -76,40 +76,17 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // ============================================
-    // DETEKCIJA KOŽE
+    // MAPA ZA PREPORUKE - SVI NA POLIRANJE
     // ============================================
 
-    function detektujKozu() {
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = 100;
-        tempCanvas.height = 100;
-        const tempCtx = tempCanvas.getContext('2d');
-        tempCtx.drawImage(slika, 0, 0, 100, 100);
-        
-        const imageData = tempCtx.getImageData(0, 0, 100, 100);
-        const data = imageData.data;
-        
-        let matching = 0;
-        let total = 0;
-        
-        for (let i = 0; i < data.length; i += 4) {
-            const r = data[i];
-            const g = data[i+1];
-            const b = data[i+2];
-            total++;
-            
-            const isLeather = (
-                (r > 130 && r < 220 && g > 90 && g < 190 && b > 60 && b < 150) ||
-                (r > 90 && r < 180 && g > 50 && g < 130 && b > 30 && b < 100) ||
-                (r > 120 && r < 200 && g > 70 && g < 150 && b > 40 && b < 110)
-            );
-            if (isLeather) matching++;
-        }
-        
-        const procenat = matching / total;
-        console.log(`🧵 Koža na slici: ${Math.round(procenat * 100)}%`);
-        return procenat;
-    }
+    const mapaUsluga = {
+        "Udubljenje": { usluga: "Poliranje", cijena: "od 300€" },
+        "Ogrebotina": { usluga: "Poliranje", cijena: "od 300€" },
+        "Pukotina": { usluga: "Poliranje", cijena: "od 300€" },
+        "Razbijeno staklo": { usluga: "Poliranje", cijena: "od 300€" },
+        "Oštećen far": { usluga: "Poliranje", cijena: "od 300€" },
+        "Probušena guma": { usluga: "Poliranje", cijena: "od 300€" }
+    };
 
     // ============================================
     // UČITAVANJE YOLO ONNX MODELA
@@ -154,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ============================================
-    // YOLO DETEKCIJA - POLIRANJE NAJMANJI PRAG (15%)
+    // YOLO DETEKCIJA - NAJMANJI PRAG 10%
     // ============================================
 
     async function pokreniYOLODetekciju() {
@@ -347,8 +324,10 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(`📊 Nakon NMS: ${nmsDetections.length} detekcija`);
 
             // ============================================
-            // FILTRIRANJE - POLIRANJE NAJMANJI PRAG (15%)
+            // FILTRIRANJE - NAJMANJI PRAG 10%
             // ============================================
+
+            console.log("🔍 FILTRIRANJE - najmanji prag 10%");
 
             const filteredDetections = nmsDetections.filter(d => {
                 const conf = d.confidence;
@@ -356,38 +335,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 const sirina = d.width;
                 const visina = d.height;
                 
-                // POLIRANJE (SVE KAROSERIJA) - PRAG 15%
+                // SVI PRAGOVI 10% - detektuje SVE
                 if (d.className === "scratch") {
-                    return conf > 0.15;  // NAJMANJI PRAG
+                    return conf > 0.10;
                 }
                 if (d.className === "dent") {
-                    return conf > 0.15 && sirina > 10 && visina > 10;
+                    return conf > 0.10 && sirina > 5 && visina > 5;
                 }
                 if (d.className === "crack") {
-                    return conf > 0.15 && centerY < 0.60 && sirina > 10 && visina > 10;
+                    return conf > 0.10 && centerY < 0.60 && sirina > 5 && visina > 5;
                 }
                 if (d.className === "tire_flat") {
-                    return conf > 0.15 && centerY > 0.35;
+                    return conf > 0.10 && centerY > 0.35;
                 }
                 if (d.className === "lamp_broken") {
-                    return conf > 0.15 && centerY < 0.55 && sirina > 10 && visina > 10;
+                    return conf > 0.10 && centerY < 0.55 && sirina > 5 && visina > 5;
                 }
                 if (d.className === "glass_shatter") {
-                    return conf > 0.15 && centerY < 0.55 && sirina > 10 && visina > 10;
+                    return conf > 0.10 && centerY < 0.55 && sirina > 5 && visina > 5;
                 }
-                return conf > 0.15;
+                return conf > 0.10;
             });
 
-            console.log(`📊 Nakon filtera: ${filteredDetections.length} detekcija`);
+            console.log(`📊 Nakon filtera (10%): ${filteredDetections.length} detekcija`);
 
             // ============================================
-            // DETEKCIJA KOŽE
+            // DETEKCIJA KOŽE - UKLONJENA
             // ============================================
-            
-            const kozaProcenat = detektujKozu();
-            
+
             // ============================================
-            // ODABIR: YOLO PREDNOST (15%) ILI KOŽA (25%)
+            // ODABIR: SAMO YOLO -> POLIRANJE
             // ============================================
             
             let odabraniNaziv = null;
@@ -401,7 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let cijena = "";
 
             // ============================================
-            // 1. YOLO DETEKCIJE (karoserija) - PREDNOST (15%)
+            // 1. YOLO DETEKCIJE - JEDINA OPCIJA
             // ============================================
             if (filteredDetections.length > 0) {
                 const najboljaYolo = filteredDetections.sort((a, b) => b.confidence - a.confidence)[0];
@@ -417,21 +394,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(`✅ YOLO: Poliranje (${Math.round(odabranaConf * 100)}%)`);
             }
             // ============================================
-            // 2. KOŽA - samo ako YOLO nije detektovao (prag 25%)
-            // ============================================
-            else if (kozaProcenat > 0.25) {
-                odabraniNaziv = "Oštećenje kože";
-                odabranaConf = kozaProcenat;
-                odabranaKlasa = "leather";
-                odabranaBoja = "#9c6644";
-                odabranaOznaka = "🧵";
-                jeYoloDetekcija = false;
-                usluga = "Restauracija kože";
-                cijena = "od 100€";
-                console.log(`✅ KOŽA: Restauracija kože (${Math.round(kozaProcenat * 100)}%)`);
-            }
-            // ============================================
-            // 3. NEMA NIČEGA
+            // 2. NEMA NIČEGA
             // ============================================
             else {
                 detekcije = [];
@@ -602,28 +565,81 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ============================================
-    // CRTANJE - BEZ LABELA NA SLICI
+    // CRTANJE
     // ============================================
 
     function nacrtajSve() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(slika, 0, 0, canvas.width, canvas.height);
 
-        // SAMO BOX - bez labele
         detekcije.forEach(function (detekcija) {
-            if (detekcija.prikaziBox && detekcija.width > 0 && detekcija.height > 0) {
-                const boja = detekcija.boja || "#e63946";
+            if (!detekcija.prikaziBox) {
+                const labela = `${detekcija.oznaka || '⚠️'} ${detekcija.naziv} → ${detekcija.usluga} (${Math.round(detekcija.pouzdanost * 100)}%)`;
                 
-                ctx.shadowColor = boja + "60";
-                ctx.shadowBlur = 15;
-                ctx.strokeStyle = boja;
-                ctx.lineWidth = 3;
-                ctx.strokeRect(detekcija.x, detekcija.y, detekcija.width, detekcija.height);
+                const padding = 8;
+                ctx.font = "bold 13px Inter";
+                const metrics = ctx.measureText(labela);
+                const labelW = metrics.width + padding * 2;
+                const labelH = 28;
+                const labelX = 10;
+                const labelY = 10;
+
+                ctx.shadowColor = "rgba(0,0,0,0.15)";
+                ctx.shadowBlur = 8;
+                ctx.fillStyle = "rgba(255,255,255,0.93)";
+                ctx.beginPath();
+                ctx.roundRect(labelX, labelY, labelW, labelH, 8);
+                ctx.fill();
                 ctx.shadowBlur = 0;
 
-                ctx.fillStyle = boja + "15";
-                ctx.fillRect(detekcija.x, detekcija.y, detekcija.width, detekcija.height);
+                ctx.fillStyle = detekcija.boja || "#e63946";
+                ctx.font = "bold 13px Inter";
+                ctx.fillText(labela, labelX + padding, labelY + labelH - 8);
+                return;
             }
+            
+            const boja = detekcija.boja || "#e63946";
+            
+            ctx.shadowColor = boja + "60";
+            ctx.shadowBlur = 15;
+            ctx.strokeStyle = boja;
+            ctx.lineWidth = 3;
+            ctx.strokeRect(detekcija.x, detekcija.y, detekcija.width, detekcija.height);
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = boja + "15";
+            ctx.fillRect(detekcija.x, detekcija.y, detekcija.width, detekcija.height);
+
+            let labela = `${detekcija.oznaka || '⚠️'} ${detekcija.naziv}`;
+            if (detekcija.usluga && detekcija.usluga !== "Pregled") {
+                labela = `${detekcija.oznaka || '⚠️'} ${detekcija.naziv} → ${detekcija.usluga}`;
+            }
+            
+            if (detekcija.pouzdanost) {
+                labela += ` (${Math.round(detekcija.pouzdanost * 100)}%)`;
+            }
+            
+            const padding = 8;
+            ctx.font = "bold 13px Inter";
+            const metrics = ctx.measureText(labela);
+            const labelW = metrics.width + padding * 2;
+            const labelH = 28;
+            
+            let labelX = detekcija.x;
+            let labelY = detekcija.y - labelH - 6;
+            if (labelY < 4) labelY = detekcija.y + 4;
+
+            ctx.shadowColor = "rgba(0,0,0,0.15)";
+            ctx.shadowBlur = 8;
+            ctx.fillStyle = "rgba(255,255,255,0.93)";
+            ctx.beginPath();
+            ctx.roundRect(labelX, labelY, labelW, labelH, 8);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.fillStyle = boja;
+            ctx.font = "bold 13px Inter";
+            ctx.fillText(labela, labelX + padding, labelY + labelH - 8);
         });
 
         if (privremeniOkvir) {
@@ -966,8 +982,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // ============================================
 
     console.log("🚗 TDC - YOLO AI Procjena oštećenja vozila");
-    console.log("🎯 POLIRANJE: najmanji prag (15%)");
-    console.log("🧵 KOŽA: veći prag (25%) - samo ako YOLO ne detektuje");
+    console.log("🎯 Poliranje - najmanji prag 10%");
+    console.log("🔍 Detektuje sve što YOLO vidi");
 
     analyzeBtn.disabled = true;
 
